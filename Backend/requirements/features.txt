@@ -1,0 +1,4 @@
+# Optional components
+langchain-community>=0.0.38
+ollama>=0.1.0
+langchain-ollama>=0.3.2 

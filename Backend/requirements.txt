@@ -1,0 +1,21 @@
+# Core dependencies
+fastapi>=0.109.2
+uvicorn>=0.27.1
+python-multipart>=0.0.9
+pydantic>=2.6.1
+
+# LangChain core
+langchain>=0.2.0
+langchain-core>=0.2.0
+
+# Optional components
+langchain-community>=0.0.21
+langchain-ollama>=0.2.0
+
+# Development tools
+pytest>=8.0.0
+pytest-cov>=4.1.0
+pytest-mock>=3.12.0
+
+# PDF processing
+pypdf2>=3.0.1
