@@ -1,18 +1,15 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-import logging
-from app.core.config import settings
-from app.core.utils import save_upload_file
+from pydantic import BaseModel
 from app.features.pdf_qa.service import PDFQAService
+from app.core.utils import save_upload_file
+import logging
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(
-    title=settings.PROJECT_NAME,
-    openapi_url=f"{settings.API_V1_STR}/openapi.json"
-)
+app = FastAPI(title="PDF QA API")
 
 # Add CORS middleware
 app.add_middleware(
@@ -26,51 +23,42 @@ app.add_middleware(
 # Initialize PDF QA service
 pdf_qa_service = PDFQAService()
 
+class QuestionRequest(BaseModel):
+    question: str
+
 @app.get("/")
 async def root():
-    return {"message": "Welcome to LangChain RAG API"}
+    return {"message": "Welcome to the PDF QA API"}
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
 
 @app.post("/upload")
 async def upload_pdf(file: UploadFile = File(...)):
     try:
-        if not file.filename:
-            raise HTTPException(status_code=400, detail="No file provided")
-        
-        logger.info(f"Attempting to save file: {file.filename}")
+        # Save the uploaded file
         file_path = await save_upload_file(file)
         
-        if not file_path:
-            raise HTTPException(status_code=400, detail="Invalid file type. Only PDF files are allowed.")
+        # Process the PDF
+        success = pdf_qa_service.process_pdf(file_path)
+        if not success:
+            raise HTTPException(status_code=500, detail="Failed to process PDF")
         
-        logger.info(f"File saved successfully at: {file_path}")
-        logger.info("Processing PDF with QA service...")
-        
-        try:
-            pdf_qa_service.process_pdf(file_path)
-            logger.info("PDF processed successfully")
-            return {"message": "PDF processed successfully"}
-        except Exception as e:
-            logger.error(f"Error processing PDF: {str(e)}")
-            raise HTTPException(status_code=500, detail=f"Error processing PDF: {str(e)}")
-            
+        return {"message": "PDF processed successfully"}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error(f"Error in upload_pdf: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/ask")
-async def ask_question(question: str):
+async def ask_question(request: QuestionRequest):
     try:
-        logger.info(f"Received question: {question}")
-        answer = pdf_qa_service.ask_question(question)
-        logger.info("Question answered successfully")
+        answer = pdf_qa_service.ask_question(request.question)
         return {"answer": answer}
     except ValueError as e:
-        logger.error(f"Value error in ask_question: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error(f"Error in ask_question: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/health")
-async def health():
-    return {"status": "ok"} 
+        raise HTTPException(status_code=500, detail="An error occurred while processing your question") 

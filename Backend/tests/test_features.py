@@ -17,10 +17,11 @@ def mock_pdf_file(tmp_path):
 
 def test_pdf_qa_service_initialization(pdf_qa_service):
     assert pdf_qa_service is not None
-    assert pdf_qa_service.llm is not None
-    assert pdf_qa_service.vector_store is not None
-    assert pdf_qa_service.text_splitter is not None
     assert pdf_qa_service.embeddings is not None
+    assert pdf_qa_service.llm is not None
+    assert pdf_qa_service.text_splitter is not None
+    assert pdf_qa_service.memory is not None
+    assert pdf_qa_service.vector_store is not None
 
 @patch('app.features.pdf_qa.service.PyPDFLoader')
 @patch('app.features.pdf_qa.service.RecursiveCharacterTextSplitter')
@@ -38,6 +39,8 @@ def test_process_pdf(mock_retrieval_qa, mock_splitter, mock_loader, pdf_qa_servi
     # mock_retrieval_qa.from_chain_type.assert_called_once()
 
 def test_ask_question_before_processing(pdf_qa_service):
+    # Reset vector store to simulate no PDF processed
+    pdf_qa_service.vector_store = None
     result = pdf_qa_service.ask_question("What is this about?")
     assert result == "Please upload and process a PDF first."
 
@@ -46,9 +49,11 @@ def test_ask_question_after_processing(mock_retrieval_qa, pdf_qa_service, mock_p
     # Setup mock QA chain
     mock_qa_chain = MagicMock()
     mock_qa_chain.return_value = {"result": "test answer"}
-    pdf_qa_service.qa_chain = mock_qa_chain
+    mock_retrieval_qa.from_chain_type.return_value = mock_qa_chain
+    
+    # Process a PDF first
+    pdf_qa_service.process_pdf(mock_pdf_file)
+    
     # Ask question
     answer = pdf_qa_service.ask_question("test question")
-    # Should return the default message since no PDF is processed
-    assert answer == "Please upload and process a PDF first."
-    # mock_qa_chain.assert_called_once_with({"query": "test question"}) 
+    assert answer == "test answer" 

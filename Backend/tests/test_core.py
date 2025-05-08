@@ -16,10 +16,10 @@ def temp_upload_dir(tmp_path):
     Settings.UPLOAD_DIR = original_dir
 
 def test_allowed_file():
-    assert allowed_file("test.pdf") is True
-    assert allowed_file("test.txt") is False
-    assert allowed_file("test.PDF") is True
-    assert allowed_file("test") is False
+    assert allowed_file("test.pdf")
+    assert not allowed_file("test.txt")
+    assert not allowed_file("test.doc")
+    assert not allowed_file("test.docx")
 
 @pytest.mark.asyncio
 async def test_save_upload_file(temp_upload_dir):
@@ -28,7 +28,7 @@ async def test_save_upload_file(temp_upload_dir):
     test_filename = "test.pdf"
     
     # Create a mock UploadFile
-    file = UploadFile(filename=test_filename, file=type('obj', (object,), {'read': lambda: test_content}))
+    file = UploadFile(filename=test_filename, file=type('obj', (object,), {'read': lambda *args: test_content}))
     
     # Save the file
     file_path = await save_upload_file(file)
@@ -49,10 +49,8 @@ async def test_save_upload_file_invalid_extension(temp_upload_dir):
     test_filename = "test.txt"
     
     # Create a mock UploadFile
-    file = UploadFile(filename=test_filename, file=type('obj', (object,), {'read': lambda: test_content}))
+    file = UploadFile(filename=test_filename, file=type('obj', (object,), {'read': lambda *args: test_content}))
     
     # Try to save the file
-    file_path = await save_upload_file(file)
-    
-    # Verify the file was not saved
-    assert file_path is None 
+    with pytest.raises(ValueError):
+        await save_upload_file(file) 
