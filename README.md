@@ -1,14 +1,15 @@
 # LangChain RAG Application
 
-A Docker-based application that uses LangChain and Ollama for PDF processing and question answering.
+A Docker-based application that uses LangChain and Ollama for PDF and schema processing, retrieval-augmented generation, and question answering.
 
 ## Features
 
 - PDF document processing and text extraction
+- **Schema ingestion and database QA** (supports .json, .yml, .yaml, .sql)
 - Question answering using Ollama models
-- Vector store persistence for document embeddings
+- Vector store persistence for document embeddings and schema
 - Memory management for efficient resource usage
-- Comprehensive test coverage
+- **End-to-end tests for both schema and PDF QA**
 - Docker-based deployment
 
 ## Prerequisites
@@ -48,7 +49,9 @@ LangChain-Rag/
 │   │   │   ├── config.py
 │   │   │   └── utils.py
 │   │   ├── features/
-│   │   │   └── pdf_qa/
+│   │   │   ├── pdf_qa/
+│   │   │   │   └── service.py
+│   │   │   └── schema_qa/
 │   │   │       └── service.py
 │   │   └── main.py
 │   ├── requirements/
@@ -58,25 +61,48 @@ LangChain-Rag/
 │   ├── tests/
 │   │   ├── test_core.py
 │   │   ├── test_features.py
-│   │   └── test_main.py
+│   │   ├── test_main.py
+│   │   ├── test_schema_qa.py
+│   │   ├── test_pdf_qa.py
+│   │   └── test_e2e_api.py
 │   └── Dockerfile
 ├── .venv/
 ├── setup.ps1
 └── README.md
 ```
 
-## Testing
+## Usage
 
-The application includes comprehensive tests for:
-- Core functionality (config and utils)
-- PDF QA feature
-- FastAPI endpoints
+### Schema Upload and QA
+- Upload a schema file (`.json`, `.yml`, `.yaml`, `.sql`) via the `/schema/upload` endpoint.
+- Ask questions about the schema using `/schema/ask`.
+- The system will answer based on the latest uploaded schema (previous schemas are cleared on new upload).
 
-To run tests manually:
+### PDF Upload and QA
+- Upload a PDF file via the `/upload` endpoint.
+- Ask questions about the PDF using `/ask`.
+- The system will answer based on the uploaded PDF content.
+
+## End-to-End Testing
+
+The application includes robust end-to-end tests for both schema and PDF QA.
+
+To run all tests (including end-to-end):
 ```powershell
 cd Backend
 python -m pytest tests/ --cov=app --cov-report=term-missing -v
 ```
+
+To run only the end-to-end tests:
+```powershell
+cd Backend
+python -m pytest tests/test_e2e_api.py -v
+```
+
+The end-to-end tests will:
+- Upload a schema, ask a question, and verify the answer is based on the schema
+- Upload a PDF, ask a question, and verify the answer is based on the PDF
+- Upload a second schema and verify the system answers based on the new schema only
 
 ## API Documentation
 
@@ -91,6 +117,9 @@ http://localhost:8000/docs
 - `GET /health`: Health check endpoint (returns status OK)
 - `POST /upload`: Upload PDF documents
 - `POST /ask`: Ask questions about uploaded documents
+- `POST /schema/upload`: Upload schema files (.json, .yml, .yaml, .sql)
+- `POST /schema/ask`: Ask questions about the uploaded schema
+- `GET /schema/summary`: Get a summary of the current schema
 
 ## Development
 

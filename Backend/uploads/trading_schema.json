@@ -1,0 +1,254 @@
+{
+  "schema_version": "1.0",
+  "last_updated": "2024-03-20",
+  "data": {
+    "clients": [
+      {
+        "client_id": "CLI001",
+        "name": "Goldman Sachs Asset Management",
+        "type": "Institutional",
+        "account_manager": "John Smith",
+        "risk_level": "High",
+        "trading_limits": {
+          "daily_limit": 1000000,
+          "monthly_limit": 20000000
+        }
+      },
+      {
+        "client_id": "CLI002",
+        "name": "BlackRock Investment",
+        "type": "Institutional",
+        "account_manager": "Sarah Johnson",
+        "risk_level": "Medium",
+        "trading_limits": {
+          "daily_limit": 800000,
+          "monthly_limit": 15000000
+        }
+      },
+      {
+        "client_id": "CLI003",
+        "name": "Morgan Stanley Wealth",
+        "type": "Retail",
+        "account_manager": "Michael Brown",
+        "risk_level": "Low",
+        "trading_limits": {
+          "daily_limit": 500000,
+          "monthly_limit": 10000000
+        }
+      }
+    ],
+    "order_types": [
+      {
+        "type_id": "OT001",
+        "name": "Market Order",
+        "description": "Execute at current market price",
+        "time_in_force": "IOC"
+      },
+      {
+        "type_id": "OT002",
+        "name": "Limit Order",
+        "description": "Execute at specified price or better",
+        "time_in_force": "GTC"
+      },
+      {
+        "type_id": "OT003",
+        "name": "Stop Order",
+        "description": "Execute when price reaches stop level",
+        "time_in_force": "GTC"
+      },
+      {
+        "type_id": "OT004",
+        "name": "Stop Limit Order",
+        "description": "Combines stop and limit order",
+        "time_in_force": "GTC"
+      }
+    ],
+    "instruments": [
+      {
+        "instrument_id": "INS001",
+        "symbol": "AAPL",
+        "name": "Apple Inc.",
+        "type": "Equity",
+        "exchange": "NASDAQ",
+        "currency": "USD"
+      },
+      {
+        "instrument_id": "INS002",
+        "symbol": "MSFT",
+        "name": "Microsoft Corporation",
+        "type": "Equity",
+        "exchange": "NASDAQ",
+        "currency": "USD"
+      },
+      {
+        "instrument_id": "INS003",
+        "symbol": "EUR/USD",
+        "name": "Euro/US Dollar",
+        "type": "Forex",
+        "exchange": "FOREX",
+        "currency": "USD"
+      }
+    ],
+    "orders": [
+      {
+        "order_id": "ORD001",
+        "client_id": "CLI001",
+        "instrument_id": "INS001",
+        "order_type": "OT001",
+        "side": "BUY",
+        "quantity": 1000,
+        "price": 150.25,
+        "status": "FILLED",
+        "timestamp": "2024-03-20T09:30:00Z",
+        "execution_price": 150.25,
+        "execution_quantity": 1000
+      },
+      {
+        "order_id": "ORD002",
+        "client_id": "CLI002",
+        "instrument_id": "INS002",
+        "order_type": "OT002",
+        "side": "SELL",
+        "quantity": 500,
+        "price": 280.50,
+        "status": "PARTIALLY_FILLED",
+        "timestamp": "2024-03-20T09:31:00Z",
+        "execution_price": 280.50,
+        "execution_quantity": 300
+      },
+      {
+        "order_id": "ORD003",
+        "client_id": "CLI003",
+        "instrument_id": "INS003",
+        "order_type": "OT003",
+        "side": "BUY",
+        "quantity": 100000,
+        "price": 1.0850,
+        "status": "PENDING",
+        "timestamp": "2024-03-20T09:32:00Z",
+        "execution_price": null,
+        "execution_quantity": 0
+      }
+    ],
+    "market_data": [
+      {
+        "instrument_id": "INS001",
+        "timestamp": "2024-03-20T09:30:00Z",
+        "bid": 150.20,
+        "ask": 150.30,
+        "last": 150.25,
+        "volume": 1000000,
+        "high": 151.00,
+        "low": 149.50
+      },
+      {
+        "instrument_id": "INS002",
+        "timestamp": "2024-03-20T09:30:00Z",
+        "bid": 280.45,
+        "ask": 280.55,
+        "last": 280.50,
+        "volume": 500000,
+        "high": 281.00,
+        "low": 280.00
+      },
+      {
+        "instrument_id": "INS003",
+        "timestamp": "2024-03-20T09:30:00Z",
+        "bid": 1.0848,
+        "ask": 1.0852,
+        "last": 1.0850,
+        "volume": 10000000,
+        "high": 1.0860,
+        "low": 1.0840
+      }
+    ],
+    "positions": [
+      {
+        "position_id": "POS001",
+        "client_id": "CLI001",
+        "instrument_id": "INS001",
+        "quantity": 1000,
+        "average_price": 150.25,
+        "current_price": 150.25,
+        "unrealized_pnl": 0,
+        "realized_pnl": 0
+      },
+      {
+        "position_id": "POS002",
+        "client_id": "CLI002",
+        "instrument_id": "INS002",
+        "quantity": -300,
+        "average_price": 280.50,
+        "current_price": 280.50,
+        "unrealized_pnl": 0,
+        "realized_pnl": 0
+      }
+    ],
+    "trades": [
+      {
+        "trade_id": "TRD001",
+        "order_id": "ORD001",
+        "client_id": "CLI001",
+        "instrument_id": "INS001",
+        "side": "BUY",
+        "quantity": 1000,
+        "price": 150.25,
+        "timestamp": "2024-03-20T09:30:00Z",
+        "commission": 10.00,
+        "tax": 0.00
+      },
+      {
+        "trade_id": "TRD002",
+        "order_id": "ORD002",
+        "client_id": "CLI002",
+        "instrument_id": "INS002",
+        "side": "SELL",
+        "quantity": 300,
+        "price": 280.50,
+        "timestamp": "2024-03-20T09:31:00Z",
+        "commission": 15.00,
+        "tax": 0.00
+      }
+    ],
+    "risk_metrics": [
+      {
+        "client_id": "CLI001",
+        "timestamp": "2024-03-20T09:30:00Z",
+        "var_95": 50000,
+        "var_99": 75000,
+        "max_drawdown": 10000,
+        "sharpe_ratio": 1.5,
+        "beta": 1.2
+      },
+      {
+        "client_id": "CLI002",
+        "timestamp": "2024-03-20T09:30:00Z",
+        "var_95": 30000,
+        "var_99": 45000,
+        "max_drawdown": 5000,
+        "sharpe_ratio": 1.8,
+        "beta": 0.9
+      }
+    ],
+    "account_balances": [
+      {
+        "client_id": "CLI001",
+        "currency": "USD",
+        "cash_balance": 1000000,
+        "margin_balance": 1500000,
+        "available_margin": 500000,
+        "unrealized_pnl": 0,
+        "realized_pnl": 0
+      },
+      {
+        "client_id": "CLI002",
+        "currency": "USD",
+        "cash_balance": 800000,
+        "margin_balance": 1200000,
+        "available_margin": 400000,
+        "unrealized_pnl": 0,
+        "realized_pnl": 0
+      }
+    ]
+  }
+} 

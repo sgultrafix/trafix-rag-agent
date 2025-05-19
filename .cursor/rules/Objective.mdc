@@ -1,0 +1,55 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Project Objective
+Design and implement an end-to-end RAG (Retrieval-Augmented Generation) based AI system that can accurately answer business and support-related queries by integrating structured database content and unstructured documentation. The system should:
+
+Understand and interpret complex database schemas, relationships, and live data to answer customer-specific queries (e.g., active service settings, billing details).
+
+Ingest and retrieve relevant information from uploaded PDF documents such as customer support manuals, configuration guides, onboarding documents, and service pricing details.
+
+Support natural language queries like:
+
+"What settings are currently activated for customer 'XYZ'?"
+
+"If we offer these services to a new customer, what monthly cost should we charge?"
+
+Combine responses from both data sources in a context-aware, accurate, and explainable manner.
+
+Operate autonomously from data ingestion and indexing to answering and refining queries, ensuring performance, relevance, and trustworthiness in a business-critical environment.
+
+Become a reliable virtual assistant for business teams, aiding in support, pricing, and onboarding decisions through intelligent, document-backed reasoning.
+
+Application Flow
+The flow of the application should be as follows:
+
+Swagger Integration: The system provides a user interface using Swagger for interaction.
+
+File Upload:
+
+Users upload PDF and documentation files into a directory named "upload".
+
+Vectorization API:
+
+Users execute the Vectorized API, which processes all uploaded files.
+
+The system converts the files into vector data using embeddings and performs indexing for efficient retrieval.
+
+Query Handling via Ask API:
+
+Users click on the Ask API, then click the "Try" button.
+
+Users enter their natural language textual query and click "Execute".
+
+The system sends the query to the LLM, which interprets the intent and context.
+
+Using the vector data and embeddings, the system retrieves the most relevant information.
+
+The retrieved information is re-analyzed and synthesized by the LLM for contextual understanding and accurate response generation.
+
+The final response is displayed to the user on the screen.
+
+
+This full-stack, interactive pipeline ensures end-to-end automation—from ingestion to retrieval and generation—providing business users with insightful, real-time, document-augmented AI responses.

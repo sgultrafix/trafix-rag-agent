@@ -22,4 +22,8 @@ chromadb>=0.4.22
 sentence-transformers>=2.2.2
 
 # Memory and Context
-redis>=5.0.1 
+redis>=5.0.1
+
+# Added from the code block
+sqlparse==0.5.3
+sqlglot==26.17.1 

@@ -8,14 +8,14 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/app/app
-      - ./uploads:/app/uploads
-      - ./chroma_db:/app/chroma_db
+      - ../Backend/app:/app/app
+      - ../uploads:/app/uploads
+      - ../chroma_db:/app/chroma_db
     environment:
-      - PYTHONPATH=/app
       - ENVIRONMENT=development
       - OLLAMA_BASE_URL=http://host.docker.internal:11434
-      - REDIS_URL=redis://redis:6379/0
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - redis
     healthcheck:
@@ -26,7 +26,7 @@ services:
     restart: unless-stopped
 
   redis:
-    image: redis:7.2-alpine
+    image: redis:latest
     ports:
       - "6379:6379"
     volumes:

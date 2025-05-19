@@ -5,7 +5,7 @@ alwaysApply: true
 ---
 ## ⚠️ Core Behavioral Instructions
 
-- Before suggesting or writing any code:
+- Before writing any code:
   - Read the user’s full instruction carefully.
   - Summarize your understanding of the request.
   - Ask for confirmation: “Here’s what I understood: [...]. Should I proceed?”
